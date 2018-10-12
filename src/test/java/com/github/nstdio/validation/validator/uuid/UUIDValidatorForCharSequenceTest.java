@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 /**
  * @author Edgar Asatryan
  */
-class UUIDValidatorForStringTest extends ValidatorTest {
+class UUIDValidatorForCharSequenceTest extends ValidatorTest {
     private static Stream<String> valid() {
         return Stream.of(
                 null,
@@ -42,7 +42,8 @@ class UUIDValidatorForStringTest extends ValidatorTest {
     }
 
     @Override
-    public ConstraintValidator<UUID, String> validator() {
-        return new UUIDValidatorForString();
+    @SuppressWarnings("unchecked")
+    public ConstraintValidator<UUID, CharSequence> validator() {
+        return new UUIDValidatorForCharSequence();
     }
 }

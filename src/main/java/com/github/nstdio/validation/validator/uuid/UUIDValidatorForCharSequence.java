@@ -8,12 +8,12 @@ import javax.validation.ConstraintValidatorContext;
 /**
  * @author Edgar Asatryan
  */
-public class UUIDValidatorForString implements ConstraintValidator<UUID, String> {
+public class UUIDValidatorForCharSequence implements ConstraintValidator<UUID, CharSequence> {
     private static final char DELIM = '-';
     private static final int UUID_LENGTH = 36;
     private static final String NIL_UUID = "00000000-0000-0000-0000-000000000000";
 
-    private boolean acceptNil = true;
+    private boolean allowNil = true;
 
     private static boolean isHex(char c) {
         return (c >= 'a' && c <= 'f') || (c >= '0' && c <= '9') || (c >= 'A' && c <= 'F') || (c == DELIM);
@@ -21,11 +21,11 @@ public class UUIDValidatorForString implements ConstraintValidator<UUID, String>
 
     @Override
     public void initialize(UUID constraintAnnotation) {
-        acceptNil = constraintAnnotation.acceptNil();
+        allowNil = constraintAnnotation.allowNil();
     }
 
     @Override
-    public boolean isValid(String value, ConstraintValidatorContext context) {
+    public boolean isValid(CharSequence value, ConstraintValidatorContext context) {
         if (value == null)
             return true;
 
@@ -50,6 +50,11 @@ public class UUIDValidatorForString implements ConstraintValidator<UUID, String>
             }
         }
 
-        return acceptNil || NIL_UUID.equals(value);
+        // we don't allow Nil UUID.
+        if (!allowNil) {
+            return !NIL_UUID.contentEquals(value);
+        }
+
+        return true;
     }
 }
