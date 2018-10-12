@@ -1,22 +1,48 @@
 package com.github.nstdio.validation.validator.uuid;
 
+import com.github.nstdio.validation.ValidatorTest;
 import com.github.nstdio.validation.constraint.UUID;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import javax.validation.ConstraintValidator;
+import java.util.stream.Stream;
 
 /**
  * @author Edgar Asatryan
  */
-class UUIDValidatorForStringTest {
+class UUIDValidatorForStringTest extends ValidatorTest {
+    private static Stream<String> valid() {
+        return Stream.of(
+                null,
+                "fde109f0-9f9b-44ab-a7bc-6de53a4ee7cd",
+                "FDE109F0-9F9B-44AB-A7BC-6DE53A4EE7CD"
+        );
+    }
 
-    private final ConstraintValidator<UUID, String> validator = new UUIDValidatorForString();
+    private static Stream<String> notValid() {
+        return Stream.of(
+                "",
+                "abc",
+                "zde109f0-9f9b-44ab-a7bc-6de53a4ee7cd",
+                "fde109f09f9b44aba7bc6de53a4ee7cd"
+        );
+    }
 
-    @Test
-    void dummy() {
-        boolean isValid = validator.isValid("fde109f0-9f9b-44ab-a7bc-6de53a4ee7cd", null);
+    @ParameterizedTest
+    @MethodSource("valid")
+    void validUUIDs(String uuid) {
+        isValid(uuid);
+    }
 
-        Assertions.assertTrue(isValid);
+    @ParameterizedTest
+    @MethodSource("notValid")
+    void notValidUUIDs(String notValid) {
+        isNotValid(notValid);
+    }
+
+    @Override
+    public ConstraintValidator<UUID, String> validator() {
+        return new UUIDValidatorForString();
     }
 }

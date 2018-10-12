@@ -11,9 +11,17 @@ import javax.validation.ConstraintValidatorContext;
 public class UUIDValidatorForString implements ConstraintValidator<UUID, String> {
     private static final char DELIM = '-';
     private static final int UUID_LENGTH = 36;
+    private static final String NIL_UUID = "00000000-0000-0000-0000-000000000000";
+
+    private boolean acceptNil = true;
 
     private static boolean isHex(char c) {
         return (c >= 'a' && c <= 'f') || (c >= '0' && c <= '9') || (c >= 'A' && c <= 'F') || (c == DELIM);
+    }
+
+    @Override
+    public void initialize(UUID constraintAnnotation) {
+        acceptNil = constraintAnnotation.acceptNil();
     }
 
     @Override
@@ -42,6 +50,6 @@ public class UUIDValidatorForString implements ConstraintValidator<UUID, String>
             }
         }
 
-        return true;
+        return acceptNil || NIL_UUID.equals(value);
     }
 }
