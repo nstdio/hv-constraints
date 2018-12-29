@@ -12,10 +12,10 @@
     </licenses>
 
     <groupId>com.github.nstdio</groupId>
-    <artifactId>constraint</artifactId>
+    <artifactId>hv-constraints</artifactId>
     <version>1.0.0</version>
 
-    <name>retrofit-either-adapter</name>
+    <name>hv-constraints</name>
     <description>An additional constraints for JSR-380</description>
     <url>https://github.com/nstdio/hv-constraints</url>
 
@@ -162,7 +162,7 @@
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
         <repository>
-            <id>ossrh</id>
+            <id>sonatype-nexus-staging</id>
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
     </distributionManagement>
