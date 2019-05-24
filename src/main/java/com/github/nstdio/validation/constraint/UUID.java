@@ -15,16 +15,23 @@
 
 package com.github.nstdio.validation.constraint;
 
-import com.github.nstdio.validation.validator.uuid.UUIDValidatorForCharSequence;
+import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
+import static java.lang.annotation.ElementType.CONSTRUCTOR;
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.PARAMETER;
+import static java.lang.annotation.ElementType.TYPE_USE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-import javax.validation.Constraint;
-import javax.validation.Payload;
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import static java.lang.annotation.ElementType.*;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
+import javax.validation.Constraint;
+import javax.validation.Payload;
+
+import com.github.nstdio.validation.validator.uuid.UUIDValidatorForCharArray;
+import com.github.nstdio.validation.validator.uuid.UUIDValidatorForCharSequence;
 
 /**
  * The annotated element must be a valid representation of UUID.
@@ -32,6 +39,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * Supported types are:
  * <ul>
  * <li>{@code CharSequence}</li>
+ * <li>{@code char[]}</li>
  * </ul>
  *
  * @author Edgar Asatryan
@@ -39,7 +47,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE})
 @Retention(RUNTIME)
 @Documented
-@Constraint(validatedBy = {UUIDValidatorForCharSequence.class})
+@Constraint(validatedBy = {UUIDValidatorForCharSequence.class, UUIDValidatorForCharArray.class})
 public @interface UUID {
     String message() default "{com.github.nstdio.validation.constraint.UUID.message}";
 
